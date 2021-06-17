@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/bradfitz/gomemcache/memcache"
@@ -44,7 +45,14 @@ func main() {
 
 	log.Printf("begin main")
 
-	client := memcache.New("localhost:11211")
+	servers := []string{"localhost:11211"}
+	if len(os.Args) > 1 {
+		servers = os.Args[1:]
+	}
+
+	log.Printf("servers = %v", servers)
+
+	client := memcache.New(servers...)
 
 	log.Printf("created client")
 
